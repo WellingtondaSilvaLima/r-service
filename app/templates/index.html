@@ -1,0 +1,50 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="shortcut icon" href="../static/image/favicon.ico" type="image/x-icon">
+  <title>CRUD Offline-First</title>
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+</head>
+<body>
+  <h1>Offline CRUD</h1>
+  <input id="dataInput" placeholder="Digite algo" />
+  <button onclick="saveData()">Salvar</button>
+  <button onclick="syncWithMongoDB()">Sincronizar</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nomes</th>
+      </tr>
+    </thead>
+
+    <tbody id="preencher">
+    </tbody>
+  </table>
+
+  <script src="/static/js/app.js"></script>
+  <script>
+    openDB().then(() => {
+    console.log("DB pronto");
+    preencherTabela(); // Mostra dados ao carregar a página
+  });
+
+  function saveData() {
+    const val = document.getElementById("dataInput").value;
+    if (!val.trim()) return alert("Digite algo antes de salvar.");
+    addItem({ content: val }).then(() => {
+      alert("Salvo localmente!");
+      document.getElementById("dataInput").value = "";
+      preencherTabela(); // Atualiza a tabela
+    });
+  }
+
+  // Registrar service worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/sw.js");
+  }
+  </script>
+</body>
+</html>
