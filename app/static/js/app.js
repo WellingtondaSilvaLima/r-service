@@ -3,6 +3,27 @@ const DB_VERSION = 1;
 const STORE_NAME = "items";
 let db;
 
+openDB().then(() => {
+  console.log("DB pronto");
+  preencherTabela(); // Mostra dados ao carregar a página
+});
+
+function saveData() {
+  const val = document.getElementById("dataInput").value;
+  if (!val.trim()) return alert("Digite algo antes de salvar.");
+  addItem({ nome: val }).then(() => {
+    alert("Salvo localmente!");
+    document.getElementById("dataInput").value = "";
+    preencherTabela(); // Atualiza a tabela
+  });
+}
+
+// Registrar service worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/static/sw.js");
+}
+
+
 // IndexedDB setup
 function openDB() {
   return new Promise((resolve, reject) => {
@@ -33,7 +54,9 @@ async function getAllItems() {
   const store = tx.objectStore(STORE_NAME);
   return new Promise((resolve) => {
     const request = store.getAll();
-    request.onsuccess = () => resolve(request.result);
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
   });
 }
 
@@ -45,7 +68,7 @@ async function preencherTabela() {
   items.forEach(item => {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
-    td.textContent = item.content; // Assume que "content" é o texto
+    td.textContent = item.content || item.nome || "Sem conteúdo";
     tr.appendChild(td);
     tbody.appendChild(tr);
   });
@@ -68,3 +91,27 @@ async function syncWithMongoDB() {
   .then(msg => alert("Sincronizado com sucesso: " + msg))
   .catch(err => console.error(err));
 }
+
+async function importarDoMongo() {
+  const jsonText = document.getElementById("dados-json").textContent;
+  const dadosMongo = JSON.parse(jsonText);
+
+  for (const item of dadosMongo) {
+    const jaExiste = await itemExiste(item.nome); // adapte se for outro campo
+    if (!jaExiste) {
+      await addItem(item);
+    }
+  }
+}
+
+async function itemExiste(nome) {
+  const todos = await getAllItems();
+  return todos.some(el => el.nome === nome); // ou outro campo único
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await openDB();         // Garante que o DB está pronto
+  await importarDoMongo(); // Puxa dados do Flask e insere se ainda não existirem
+  await preencherTabela(); // Exibe na tabela
+});

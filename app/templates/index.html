@@ -12,6 +12,7 @@
   <input id="dataInput" placeholder="Digite algo" />
   <button onclick="saveData()">Salvar</button>
   <button onclick="syncWithMongoDB()">Sincronizar</button>
+  <button onclick="preencherTabela()">Preencher</button>
 
   <table>
     <thead>
@@ -24,27 +25,10 @@
     </tbody>
   </table>
 
+  <div id="dados" data-dados="{{ nomes | tojson | safe }}"></div>
   <script src="/static/js/app.js"></script>
-  <script>
-    openDB().then(() => {
-    console.log("DB pronto");
-    preencherTabela(); // Mostra dados ao carregar a página
-  });
-
-  function saveData() {
-    const val = document.getElementById("dataInput").value;
-    if (!val.trim()) return alert("Digite algo antes de salvar.");
-    addItem({ content: val }).then(() => {
-      alert("Salvo localmente!");
-      document.getElementById("dataInput").value = "";
-      preencherTabela(); // Atualiza a tabela
-    });
-  }
-
-  // Registrar service worker
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/static/sw.js");
-  }
+  <script id="dados-json" type="application/json">
+    {{ nomes | tojson }}
   </script>
 </body>
 </html>

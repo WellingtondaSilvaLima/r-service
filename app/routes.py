@@ -6,7 +6,9 @@ main_bp = Blueprint("main", __name__)
 
 @main_bp.route("/")
 def home():
-    return render_template("index.html")
+    nomes = list(nomes_collection.find({}, {'_id': 0}))
+
+    return render_template("index.html", nomes=nomes)
 
 @main_bp.route("/recebe-sincronizacao", methods=['POST'])
 def recebe_sincronizacao():
@@ -22,8 +24,8 @@ def recebe_sincronizacao():
         # Insere apenas os nomes que ainda não estão no banco
         novos = 0
         for nome in nomes:
-            if nome.get('content') and nome['content'] not in nomes_db:
-                sincronizar(nome['content'])
+            if nome.get('nome') and nome['nome'] not in nomes_db:
+                sincronizar(nome['nome'])
                 novos += 1
 
         return jsonify({'msg': 'Sincronização concluída', 'novos_inseridos': novos})
