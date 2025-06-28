@@ -115,3 +115,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   await importarDoMongo(); // Puxa dados do Flask e insere se ainda não existirem
   await preencherTabela(); // Exibe na tabela
 });
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/static/js/sw.js')
+    .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
+    .catch(err => console.error('❌ Erro ao registrar Service Worker:', err));
+}

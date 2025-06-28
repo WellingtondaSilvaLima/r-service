@@ -1,20 +1,35 @@
 {
-  "name": "Offline CRUD App",
-  "short_name": "OfflineCRUD",
+  "name": "R-SERVICE",
+  "short_name": "R-Service",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#2196f3",
   "icons": [
     {
-    "src": "./static/image/favicon-32x32.png",
-    "sizes": "32x32",
-    "type": "image/png"
+      "src": "/static/image/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-    "src": "./static/image/favicon-16x16.png",
-    "sizes": "16x16",
-    "type": "image/png"
+      "src": "/static/image/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/image/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/image/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/image/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
     }
   ]
 }
