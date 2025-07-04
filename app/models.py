@@ -1,8 +1,8 @@
 from pymongo import MongoClient
-from app.configs import Config
 import certifi
 
-client = MongoClient(Config.MONGO_URI, tlsCAFile=certifi.where())
+MONGO_URI = 'mongodb+srv://wellingtonlimaDevPython:Qazujm%401092@nomesteste.ssgjimc.mongodb.net/?retryWrites=true&w=majority&tls=true'
+client = MongoClient(MONGO_URI, tlsCAFile=certifi.where())
 
 db = client['nomesTeste']
 
