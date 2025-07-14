@@ -18,12 +18,6 @@ function saveData() {
   });
 }
 
-// Registrar service worker
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/static/sw.js");
-}
-
-
 // IndexedDB setup
 function openDB() {
   return new Promise((resolve, reject) => {
