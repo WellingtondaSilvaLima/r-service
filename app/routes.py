@@ -32,3 +32,7 @@ def recebe_sincronizacao():
 
     except Exception as e:
         return jsonify({'err': True, 'msg': f'Erro: {str(e)}'}), 500
+    
+@main_bp.route('/index.html')
+def index_html():
+    return render_template('index.html')

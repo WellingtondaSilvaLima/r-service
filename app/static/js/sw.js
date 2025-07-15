@@ -1,6 +1,8 @@
 const CACHE_NAME = 'rservice-cache-v1';
 const URLS_TO_CACHE = [
   '/',
+  '/index.html',
+  '/recebe-sincronizacao',
   '/static/js/app.js',
   '/static/manifest.json',
   '/static/image/android-chrome-192x192.png',
@@ -57,7 +59,7 @@ self.addEventListener('fetch', event => {
       return fetch(event.request).catch(() => {
         // fallback para páginas HTML
         if (event.request.mode === 'navigate') {
-          return caches.match('/');
+          return caches.match('/') || caches.match('/index.html');
         }
       });
     })
