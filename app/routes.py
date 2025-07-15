@@ -35,4 +35,5 @@ def recebe_sincronizacao():
     
 @main_bp.route('/index.html')
 def index_html():
-    return render_template('index.html')
+    nomes = list(nomes_collection.find({}, {'_id': 0}))
+    return render_template('index.html', nomes=nomes)
